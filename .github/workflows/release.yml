@@ -1,12 +1,19 @@
 name: Build and release
 
-# Push a tag like v0.6.1 to build and publish a release.
-# Or run it by hand from the Actions tab to get the zips as build artifacts.
+# Two ways to publish a release:
+#  - Push a tag like v0.6.1, or
+#  - Actions tab -> "Build and release" -> Run workflow, and enter a version such as v0.6.1.
+# Leave the version empty to only build the zips (downloadable as build artifacts).
 on:
   push:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version to publish, e.g. v0.6.1 (leave empty to only build)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -58,9 +65,13 @@ jobs:
           path: dist/*.zip
 
       - name: Publish GitHub release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || inputs.version != ''
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ inputs.version || github.ref_name }}
+          name: Proofmark ${{ inputs.version || github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
           files: dist/*.zip
           body: |
             ## Downloads

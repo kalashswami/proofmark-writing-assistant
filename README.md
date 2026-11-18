@@ -134,7 +134,7 @@ cd proofmark-writing-assistant
 - Standalone copy that still needs the .NET Desktop Runtime: `desktop\publish.cmd` (output in `desktop\publish\`)
 - Fully self-contained copy for other PCs: `desktop\share.cmd` (output in `desktop\Proofmark-Desktop-for-sharing.zip`)
 
-**Releases:** pushing a tag such as `v0.6.1` runs [the release workflow](.github/workflows/release.yml), which builds the self-contained Windows app on GitHub's servers, zips the extension, and attaches both to a new release. You can also run it by hand from the **Actions** tab to get the zips as build artifacts without making a release.
+**Releases:** [the release workflow](.github/workflows/release.yml) builds the self-contained Windows app on GitHub's servers, zips the extension, and attaches both to a new release. Start it either by pushing a tag such as `v0.6.1`, or from the **Actions** tab → **Build and release** → **Run workflow**, entering the version (for example `v0.6.1`). Leave the version empty to only build the zips as downloadable build artifacts.
 
 ---
 
