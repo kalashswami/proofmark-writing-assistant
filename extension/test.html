@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Proofmark Field Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&display=swap">
+<style>
+/* Layout: a lab bench. A band with the brief and a live engine readout, then a grid of stand-in writing surfaces, then the pipeline */
+:root{
+  --paper:#EEF1F3; --sheet:#FFFFFF; --hover:#F4F6F8;
+  --ink:#17202A; --ink-2:#4B5764; --ink-3:#7E8994; --rule:#D9DFE4;
+  --accent:#243746; --accent-ink:#FFFFFF; --brand:#C2402A;
+  --bubble-me:#E3ECF5; --bubble-them:#FFFFFF;
+  --font-text:"Literata", Georgia, "Times New Roman", serif;
+  --font-ui:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1317; --sheet:#151C22; --hover:#1B242B;
+    --ink:#E3E8EC; --ink-2:#A7B2BC; --ink-3:#76838F; --rule:#27323B;
+    --accent:#CFDCE6; --accent-ink:#0E1317; --brand:#F0806A;
+    --bubble-me:#22313E; --bubble-them:#1B242B;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1317; --sheet:#151C22; --hover:#1B242B;
+  --ink:#E3E8EC; --ink-2:#A7B2BC; --ink-3:#76838F; --rule:#27323B;
+  --accent:#CFDCE6; --accent-ink:#0E1317; --brand:#F0806A;
+  --bubble-me:#22313E; --bubble-them:#1B242B;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:14px;line-height:1.5}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.band{background:var(--sheet);border-bottom:1px solid var(--rule)}
+.band-inner,.bench{max-width:1120px;margin:0 auto;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+.band-inner{padding-block:28px 22px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:end}
+.brand{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.brand svg{color:var(--brand)}
+h1{margin:10px 0 8px;font-family:var(--font-text);font-weight:600;font-size:34px;line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
+.lede{margin:0;color:var(--ink-2);max-width:60ch}
+.readout{border:1px solid var(--rule);border-radius:8px;background:var(--paper);padding:12px 14px;min-width:0}
+.readout-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
+.live.on i{background:#1F9D63}
+.readout dl{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 14px}
+.readout dt{font-size:11px;color:var(--ink-3)}
+.readout dd{margin:0;font-family:var(--font-mono);font-size:13px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.bench{padding-block:22px 48px;display:flex;flex-direction:column;gap:22px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.surface{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.surface.wide{grid-column:1 / -1}
+.s-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--rule)}
+.s-title{font-weight:600}
+.s-tag{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3)}
+.s-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.lab-btn{font:inherit;font-size:13px;font-weight:500;padding:7px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer;white-space:nowrap}
+.lab-btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+
+/* Email draft */
+.mail-row{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;border-bottom:1px solid var(--rule)}
+.mail-row label{font-size:12.5px;color:var(--ink-3)}
+.mail-row input{font:inherit;border:0;background:transparent;color:var(--ink);padding:8px 0;outline:0;width:100%;min-width:0}
+.mail-body{min-height:190px;padding:6px 0 0;outline:0;font-size:14.5px;line-height:1.6;overflow-wrap:break-word}
+.mail-body p{margin:0 0 10px}
+.mail-body a{color:var(--accent)}
+.mail-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:6px;border-top:1px solid var(--rule)}
+.note{font-size:12px;color:var(--ink-3)}
+
+/* Chat */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:280px}
+.chat-log{list-style:none;margin:0;padding:12px;display:flex;flex-direction:column;gap:6px;background:var(--paper);border-radius:8px;flex:1;max-height:220px;overflow:auto}
+.bubble{max-width:80%;padding:7px 11px;border-radius:12px;font-size:14px;line-height:1.4;overflow-wrap:break-word}
+.bubble.them{align-self:flex-start;background:var(--bubble-them);border:1px solid var(--rule);border-bottom-left-radius:4px}
+.bubble.me{align-self:flex-end;background:var(--bubble-me);border-bottom-right-radius:4px}
+.chat-compose{display:flex;gap:8px;align-items:flex-end}
+.chat-input{flex:1;min-width:0;max-height:120px;overflow:auto;padding:9px 12px;border:1px solid var(--rule);border-radius:18px;background:var(--sheet);outline:0;font-size:14px;line-height:1.45;overflow-wrap:break-word}
+.chat-input:focus{border-color:var(--ink-3)}
+.chat-input:empty::before{content:attr(data-placeholder);color:var(--ink-3)}
+
+/* Search */
+.search{display:flex;align-items:center;gap:10px;padding:6px 6px 6px 16px;border:1px solid var(--rule);border-radius:999px;background:var(--sheet)}
+.search:focus-within{border-color:var(--ink-3)}
+.search svg{color:var(--ink-3);flex:none}
+.search input{flex:1;min-width:0;font:inherit;font-size:15px;border:0;outline:0;background:transparent;color:var(--ink);padding:8px 0}
+
+/* Notes */
+.notes,.optout{width:100%;font-family:var(--font-text);font-size:15px;line-height:1.65;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;resize:vertical;outline:0}
+.notes:focus,.optout:focus{border-color:var(--ink-3)}
+.notes{height:220px}
+.optout{height:84px}
+
+/* Pipeline */
+.pipe{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:18px 20px}
+.pipe h2{margin:0 0 4px;font-family:var(--font-text);font-weight:600;font-size:21px}
+.pipe > p{margin:0 0 14px;color:var(--ink-2);max-width:70ch}
+.steps{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 22px;counter-reset:step}
+.steps li{counter-increment:step;display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 10px;align-content:start}
+.steps li::before{content:counter(step);grid-row:span 2;width:24px;height:24px;border-radius:50%;border:1px solid var(--rule);display:grid;place-items:center;font-family:var(--font-mono);font-size:12px;color:var(--ink-2)}
+.steps b{font-weight:600}
+.steps span{color:var(--ink-2);font-size:13px}
+.steps code{font-family:var(--font-mono);font-size:12px}
+
+@media (max-width: 900px){
+  .band-inner{grid-template-columns:minmax(0,1fr);gap:18px}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .steps{grid-template-columns:minmax(0,1fr)}
+  h1{font-size:28px}
+}
+@media (max-width: 480px){
+  .readout dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mail-row{grid-template-columns:56px minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="band-inner">
+    <div>
+      <div class="brand"><svg width="14" height="12" viewBox="0 0 16 14" aria-hidden="true"><path d="M2 12.5 L8 2 L14 12.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Proofmark Field Lab</div>
+      <h1>Click into any field below.</h1>
+      <p class="lede">These stand in for the places people write online: an email draft, a chat box, a search bar and a notes field. Proofmark finds the field you’re in, reads its text, and draws its marks and the floating button in a separate layer, so the page’s own markup is never changed. Hover an underline or click the button in the field’s corner.</p>
+    </div>
+    <aside class="readout" aria-label="Live engine readout">
+      <div class="readout-head"><span class="eyebrow">Live engine</span><span class="live" id="live"><i></i><span id="liveText">Waiting for a field</span></span></div>
+      <dl>
+        <div><dt>Field type</dt><dd id="rField">—</dd></div>
+        <div><dt>Characters</dt><dd id="rChars">—</dd></div>
+        <div><dt>Flags</dt><dd id="rSugs">—</dd></div>
+        <div><dt>Underline boxes</dt><dd id="rBoxes">—</dd></div>
+        <div><dt>Check</dt><dd id="rCheck">—</dd></div>
+        <div><dt>Measure</dt><dd id="rMeasure">—</dd></div>
+      </dl>
+    </aside>
+  </div>
+</header>
+
+<main class="bench">
+  <div class="grid">
+    <section class="surface">
+      <div class="s-head"><span class="s-title">Email draft</span><span class="s-tag">contenteditable · &lt;p&gt; &lt;b&gt; &lt;a&gt; &lt;br&gt;</span></div>
+      <div class="s-body">
+        <div class="mail-row"><label for="mailTo">To</label><input id="mailTo" type="email" value="jordan@example.com" autocomplete="off"></div>
+        <div class="mail-row"><label for="mailSubject">Subject</label><input id="mailSubject" type="text" value="Quick follow up on the the proposal" autocomplete="off"></div>
+        <div class="mail-body" id="mailBody" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Email body" spellcheck="false"><p>Hi Jordan,</p><p>I just wanted to follow up on the proposal. Due to the fact that the deadline is close, i think we should make a decision this week. The <b>budget</b> was reviewed by finance and their was a few concerns about the new enviroment.</p><p>However the team is very excited. Here is the <a href="#draft-plan">draft plan</a> if you want to look, and let me know what works for you!!</p><p>Best,<br>Sam</p></div>
+        <div class="mail-foot"><span class="note">The To field is an email address, so it’s skipped.</span><button type="button" class="lab-btn ghost" id="mailReset">Reset draft</button></div>
+      </div>
+    </section>
+
+    <section class="surface">
+      <div class="s-head"><span class="s-title">Chat</span><span class="s-tag">contenteditable · cleared by the page on send</span></div>
+      <div class="s-body chat">
+        <ol class="chat-log" id="chatLog">
+          <li class="bubble them">are we still on for thursday?</li>
+          <li class="bubble me">Yes, I’ll bring the notes.</li>
+        </ol>
+        <div class="chat-compose">
+          <div class="chat-input" id="chatInput" contenteditable="true" role="textbox" aria-label="Message" data-placeholder="Type a message" spellcheck="false">sorry to bother you, but could you send me teh slides? its a lot easier then email</div>
+          <button type="button" class="lab-btn" id="chatSend">Send</button>
+        </div>
+        <span class="note">Press Enter to send. The page empties the box itself, and Proofmark notices on its next poll.</span>
+      </div>
+    </section>
+
+    <section class="surface wide">
+      <div class="s-head"><span class="s-title">Search bar</span><span class="s-tag">input type=search · single line, compact button</span></div>
+      <div class="s-body">
+        <form class="search" role="search" id="searchForm">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="searchBox" type="search" aria-label="Search" value="how to recieve a passport faster then usual" autocomplete="off" spellcheck="false">
+          <button type="submit" class="lab-btn">Search</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="surface">
+      <div class="s-head"><span class="s-title">Notes</span><span class="s-tag">textarea · scrolls inside, measured by a mirror</span></div>
+      <div class="s-body">
+        <textarea class="notes" id="notes" aria-label="Notes" spellcheck="false">Meeting notes, Thursday
+
+The launch plan was approved by the steering group. In order to hit the date, design will finalize the screens prior to the review and engineering will start the build on Monday, and the support team will update the help articles while marketing prepares the announcement for the blog and the newsletter at the same time.
+
+Open questions:
+- Who owns the the rollback plan?
+- Can we get a large number of beta testers before the end of the month?
+- Each and every bug from the pilot needs a ticket.
+- Should we definately keep the old onboarding flow?
+
+Next review is basically next Tuesday. Scroll down inside this box and the underlines follow the text.
+
+Parking lot:
+- pricing page copy
+- the the referral program
+- accessibility pass on the settings screen</textarea>
+      </div>
+    </section>
+
+    <section class="surface">
+      <div class="s-head"><span class="s-title">Opted-out field</span><span class="s-tag">data-proofmark="false"</span></div>
+      <div class="s-body">
+        <textarea class="optout" aria-label="Opted-out field" data-proofmark="false" spellcheck="false">Sites can mark a field with data-proofmark="false" and teh mistakes in it are left alone. Proofmark also respects data-gramm="false", the attribute sites already use to opt out of Grammarly.</textarea>
+        <span class="note">No underlines and no button should appear here. Code editors are skipped the same way.</span>
+      </div>
+    </section>
+  </div>
+
+  <section class="pipe" aria-labelledby="pipeTitle">
+    <h2 id="pipeTitle">What happens when you click into a field</h2>
+    <p>The same content script runs here and inside the extension on every site. Each step reads the page; none of them rewrites its markup.</p>
+    <ol class="steps">
+      <li><b>Detect</b><span>A <code>focusin</code> listener reads the real target through shadow DOM and walks up to the editable root: a textarea, a text or search input, or the top contenteditable.</span></li>
+      <li><b>Read</b><span>Inputs give their <code>value</code>. Rich editors are walked node by node into plain text, with a map from every character back to its text node.</span></li>
+      <li><b>Check</b><span>The rules engine runs locally in a few milliseconds after typing pauses. Claude is called only when you press Deep check or Rewrite.</span></li>
+      <li><b>Measure</b><span><code>Range.getClientRects()</code> gives the boxes for each flagged span. Textareas can’t be measured directly, so an invisible mirror div copies their styles and scroll.</span></li>
+      <li><b>Draw</b><span>Underlines, the button, cards and the panel live in one closed shadow root on <code>&lt;html&gt;</code>, clipped to the field and any scrolling parent. Scrolling only moves the layer.</span></li>
+      <li><b>Apply</b><span>Accepting selects the span and runs <code>insertText</code>, so the site’s editor sees a normal edit and Ctrl+Z still works.</span></li>
+    </ol>
+  </section>
+</main>
+
+<script src="host-extension.js"></script>
+<script src="engine.js"></script>
+<script src="lab.js"></script>
+<script src="content.js"></script>
+</body>
+</html>

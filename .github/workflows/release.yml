@@ -1,0 +1,73 @@
+name: Build and release
+
+# Push a tag like v0.6.1 to build and publish a release.
+# Or run it by hand from the Actions tab to get the zips as build artifacts.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build the desktop app (self-contained, no .NET needed on the user's PC)
+        shell: pwsh
+        run: >
+          dotnet publish desktop/ProofmarkDesktop.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -o out/Proofmark-Desktop
+
+      - name: Check the build output
+        shell: pwsh
+        run: |
+          foreach ($f in @("out/Proofmark-Desktop/ProofmarkDesktop.exe", "out/Proofmark-Desktop/engine/engine.js", "out/Proofmark-Desktop/proofmark.ico")) {
+            if (-not (Test-Path $f)) { throw "Missing from build output: $f" }
+          }
+          Get-ChildItem -Recurse out/Proofmark-Desktop | Select-Object FullName, Length | Format-Table -AutoSize
+
+      - name: Package zips
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist, staging | Out-Null
+          Copy-Item README.md, LICENSE, THIRD_PARTY_NOTICES.md -Destination out/Proofmark-Desktop
+          Compress-Archive -Path out/Proofmark-Desktop -DestinationPath dist/Proofmark-Desktop-win-x64.zip
+          Copy-Item -Path extension -Destination staging/proofmark-extension -Recurse
+          Copy-Item LICENSE, THIRD_PARTY_NOTICES.md -Destination staging/proofmark-extension
+          Compress-Archive -Path staging/proofmark-extension -DestinationPath dist/proofmark-extension.zip
+          Get-ChildItem dist | Select-Object Name, Length | Format-Table -AutoSize
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: proofmark-release
+          path: dist/*.zip
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          body: |
+            ## Downloads
+
+            - **proofmark-extension.zip** — browser extension for Chrome, Edge, Brave and Arc (Windows, macOS, Linux).
+            - **Proofmark-Desktop-win-x64.zip** — Windows 10/11 (64-bit) desktop app. No .NET install needed.
+
+            Install steps are in the [README](https://github.com/${{ github.repository }}#readme).
+
+            The Windows app isn't code-signed, so the first launch may show "Windows protected your PC". Click **More info** → **Run anyway**.

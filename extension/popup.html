@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Proofmark settings</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <svg width="16" height="14" viewBox="0 0 16 14" aria-hidden="true"><path d="M2 12.5 L8 2 L14 12.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h1>Proofmark</h1>
+  </header>
+
+  <section class="site">
+    <div>
+      <div class="label">This site</div>
+      <div class="site-name" id="siteName">—</div>
+    </div>
+    <button type="button" class="switch" id="siteToggle" role="switch" aria-checked="true" aria-label="Check writing on this site"><span></span></button>
+  </section>
+  <p class="hint" id="siteHint"></p>
+
+  <section class="group">
+    <div class="label">Instant checks</div>
+    <label class="opt"><input type="checkbox" id="cat-correctness" data-cat="correctness"><span class="dot c1"></span>Correctness <span class="hint">spelling, grammar, punctuation</span></label>
+    <label class="opt"><input type="checkbox" id="cat-clarity" data-cat="clarity"><span class="dot c2"></span>Clarity <span class="hint">wordy phrases, passive voice</span></label>
+    <label class="opt"><input type="checkbox" id="cat-style" data-cat="style"><span class="dot c3"></span>Style <span class="hint">weak word choice</span></label>
+    <label class="opt"><input type="checkbox" id="cat-tone" data-cat="tone"><span class="dot c4"></span>Tone <span class="hint">hedging, apologies</span></label>
+  </section>
+
+  <section class="group">
+    <div class="label">Smart checks and rewrites</div>
+    <p class="hint">Runs when you press Deep check or Rewrite, and also while you write if the box below is ticked.</p>
+    <label class="opt"><input type="checkbox" id="autoAi"><b>Check with AI as I write</b> <span class="hint">when you pause typing</span></label>
+
+    <label class="engine"><input type="radio" name="provider" value="none" id="pNone"><span><b>Off</b></span></label>
+
+    <label class="engine"><input type="radio" name="provider" value="chrome" id="pChrome"><span><b>Chrome’s built-in AI</b> <em class="tag free">Free</em><br><span class="hint">Gemini Nano, running on this computer. Your text never leaves it.</span></span></label>
+    <div class="sub" data-for="chrome">
+      <p class="hint" id="chromeStatus">Checking…</p>
+      <button type="button" class="btn" id="chromeDownload" hidden>Download the model</button>
+    </div>
+
+    <label class="engine"><input type="radio" name="provider" value="openai" id="pOpenai"><span><b>Free AI model</b> <em class="tag free">Free</em><br><span class="hint">Groq or Gemini’s free cloud tiers, or Ollama and LM Studio on this computer.</span></span></label>
+    <div class="sub" data-for="openai">
+      <label class="field-label" for="oaiPreset">App</label>
+      <select id="oaiPreset">
+        <option value="groq">Groq (cloud, free tier)</option>
+        <option value="gemini">Google Gemini (cloud, free tier)</option>
+        <option value="ollama">Ollama (on this computer)</option>
+        <option value="lmstudio">LM Studio</option>
+        <option value="custom">Other OpenAI-compatible server</option>
+      </select>
+      <label class="field-label" for="oaiBase">Server address</label>
+      <input type="text" id="oaiBase" placeholder="http://localhost:11434/v1" autocomplete="off" spellcheck="false">
+      <label class="field-label" for="oaiModel">Model name</label>
+      <input type="text" id="oaiModel" placeholder="llama3.2" autocomplete="off" spellcheck="false">
+      <label class="field-label" for="oaiKey">API key <span class="optional">only for cloud services</span></label>
+      <input type="password" id="oaiKey" placeholder="Leave empty for Ollama and LM Studio" autocomplete="off" spellcheck="false">
+      <p class="hint" id="oaiHint"></p>
+    </div>
+
+    <label class="engine"><input type="radio" name="provider" value="claude" id="pClaude"><span><b>Claude API</b> <em class="tag">Paid</em><br><span class="hint">Most thorough. Uses your own key from the Claude Console.</span></span></label>
+    <div class="sub" data-for="claude">
+      <label class="field-label" for="apiKey">Claude API key</label>
+      <input type="password" id="apiKey" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+      <label class="field-label" for="workspaceId">Workspace ID <span class="optional">only if your key isn’t tied to a workspace</span></label>
+      <input type="text" id="workspaceId" placeholder="wrkspc_…" autocomplete="off" spellcheck="false">
+      <label class="field-label" for="model">Model for deep checks</label>
+      <select id="model">
+        <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (more thorough)</option>
+        <option value="claude-haiku-5-5">Claude Haiku 5.5 (faster)</option>
+      </select>
+      <button type="button" class="btn" id="clearKey">Remove key</button>
+    </div>
+  </section>
+
+  <section class="group">
+    <label class="opt"><input type="checkbox" id="ltOn"><b>Add a LanguageTool grammar pass</b> <em class="tag free">Free</em></label>
+    <p class="hint">An open-source grammar engine. It runs with Deep check alongside any engine above, or on its own.</p>
+    <div class="sub on" id="ltSub">
+      <label class="field-label" for="ltWhere">Server</label>
+      <select id="ltWhere">
+        <option value="public">LanguageTool’s free server (sends text to LanguageTool, 20 checks a minute)</option>
+        <option value="custom">My own server</option>
+      </select>
+      <input type="text" id="ltUrl" placeholder="http://localhost:8081" autocomplete="off" spellcheck="false" hidden>
+    </div>
+  </section>
+
+  <div class="row">
+    <button type="button" class="btn primary" id="save">Save</button>
+    <span class="hint" id="status" role="status"></span>
+  </div>
+
+  <footer class="foot">
+    <button type="button" class="btn" id="openTest">Open test page</button>
+  </footer>
+</main>
+<script src="popup.js"></script>
+</body>
+</html>

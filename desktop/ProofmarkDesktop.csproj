@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+    <RollForward>Major</RollForward>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Proofmark</RootNamespace>
+    <AssemblyName>ProofmarkDesktop</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>proofmark.ico</ApplicationIcon>
+    <Version>0.5.2</Version>
+    <!-- Never compile stray copies (an extra unzipped folder, old publish output) that end up inside this folder -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);ProofmarkDesktop\**;publish\**;share\**;_to_delete\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Hosts the shared Proofmark engine (engine.js) in the same V8 engine the browser extension uses -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="engine\engine.js" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="proofmark.ico" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

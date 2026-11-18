@@ -1,0 +1,11 @@
+# .NET build output
+desktop/bin/
+desktop/obj/
+desktop/publish/
+desktop/share/
+*.user
+.vs/
+# Packaged downloads (published on the Releases page instead)
+*.zip
+Thumbs.db
+.DS_Store

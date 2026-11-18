@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Proofmark",
+  "version": "0.6.0",
+  "description": "Instant writing checks in any text box, with free on-device or local AI deep checks and rewrites.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Proofmark",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" }
+  },
+  "options_ui": { "page": "popup.html", "open_in_tab": true },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["storage", "activeTab", "offscreen"],
+  "host_permissions": [
+    "https://api.anthropic.com/*",
+    "https://api.languagetool.org/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["engine.js", "host-extension.js", "content.js"],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ]
+}
