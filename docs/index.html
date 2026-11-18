@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proofmark Writing Assistant — free, open-source grammar and spell checker</title>
+<meta name="description" content="Proofmark is a free, open-source writing assistant and Grammarly alternative. It checks spelling, grammar and style in any text box on the web (Chrome, Edge, Brave) and in Windows desktop apps, with optional free local AI.">
+<meta name="keywords" content="Proofmark, writing assistant, grammar checker, spell checker, Grammarly alternative, free, open source, Chrome extension, Windows, Ollama">
+<meta name="author" content="Kalash Swami">
+<link rel="canonical" href="https://kalashswami.github.io/proofmark-writing-assistant/">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Proofmark Writing Assistant — free, open-source grammar and spell checker">
+<meta property="og:description" content="Checks spelling, grammar and style in any text box on the web and in Windows desktop apps. Free and open source.">
+<meta property="og:url" content="https://kalashswami.github.io/proofmark-writing-assistant/">
+<meta property="og:image" content="https://kalashswami.github.io/proofmark-writing-assistant/icon.png">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Proofmark Writing Assistant",
+  "alternateName": "Proofmark",
+  "description": "Free, open-source writing assistant that checks spelling, grammar and style in any text box on the web and in Windows desktop apps.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Windows 10, Windows 11, Chrome, Microsoft Edge",
+  "softwareVersion": "0.6.0",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Kalash Swami" },
+  "downloadUrl": "https://github.com/kalashswami/proofmark-writing-assistant/releases/latest",
+  "codeRepository": "https://github.com/kalashswami/proofmark-writing-assistant",
+  "url": "https://kalashswami.github.io/proofmark-writing-assistant/"
+}
+</script>
+<style>
+  :root { --ink:#1d2433; --muted:#5b6475; --line:#e3e6ec; --bg:#fbfaf7; --accent:#1f7a5c; --accent-ink:#fff; --mark:#d1453b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink); background:var(--bg); }
+  .wrap { max-width:880px; margin:0 auto; padding:0 24px; }
+  header { padding:56px 0 32px; }
+  .brand { display:flex; align-items:center; gap:14px; }
+  .brand img { width:56px; height:56px; border-radius:12px; }
+  h1 { font-size:clamp(30px,5vw,44px); line-height:1.15; margin:24px 0 12px; letter-spacing:-0.02em; }
+  .lede { font-size:20px; color:var(--muted); margin:0 0 28px; max-width:640px; }
+  .demo { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin:0 0 28px; font-size:18px; }
+  .demo u { text-decoration:none; border-bottom:2px solid var(--mark); }
+  .demo .fix { display:inline-block; margin-left:8px; font-size:13px; background:var(--accent); color:var(--accent-ink); padding:2px 8px; border-radius:999px; vertical-align:middle; }
+  .buttons { display:flex; flex-wrap:wrap; gap:12px; }
+  .btn { display:inline-block; padding:12px 18px; border-radius:10px; font-weight:600; text-decoration:none; border:1px solid var(--accent); }
+  .btn.primary { background:var(--accent); color:var(--accent-ink); }
+  .btn.secondary { color:var(--accent); background:#fff; }
+  .small { font-size:14px; color:var(--muted); }
+  section { padding:36px 0; border-top:1px solid var(--line); }
+  h2 { font-size:26px; margin:0 0 16px; letter-spacing:-0.01em; }
+  h3 { font-size:19px; margin:24px 0 8px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .card h3 { margin-top:0; }
+  ol { padding-left:22px; } li { margin:4px 0; }
+  code { background:#eef0f3; padding:1px 6px; border-radius:5px; font-size:0.92em; }
+  a { color:var(--accent); }
+  footer { padding:32px 0 56px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><img src="icon.png" alt="Proofmark logo"><strong style="font-size:20px">Proofmark</strong></div>
+    <h1>Proofmark Writing Assistant: a free, open-source grammar and spell checker</h1>
+    <p class="lede">Proofmark checks your spelling, grammar and style as you type, in any text box on the web and in your Windows desktop apps. It's a free Grammarly alternative that keeps your text on your computer.</p>
+    <div class="demo" aria-label="Example of a Proofmark suggestion">I <u>recieve</u> your email yesterday. <span class="fix">received</span></div>
+    <div class="buttons">
+      <a class="btn primary" href="https://github.com/kalashswami/proofmark-writing-assistant/releases/latest/download/proofmark-extension.zip">Download the browser extension</a>
+      <a class="btn primary" href="https://github.com/kalashswami/proofmark-writing-assistant/releases/latest/download/Proofmark-Desktop-win-x64.zip">Download for Windows</a>
+      <a class="btn secondary" href="https://github.com/kalashswami/proofmark-writing-assistant">View on GitHub</a>
+    </div>
+    <p class="small">Version 0.6.0 · Free · GPL-3.0 open source · Extension for Chrome, Edge, Brave and Arc · Desktop app for Windows 10 and 11 (64-bit)</p>
+  </header>
+
+  <section>
+    <h2>What Proofmark does</h2>
+    <div class="grid">
+      <div class="card"><h3>Works where you write</h3><p>Gmail, Outlook, WhatsApp, Slack, Discord, Teams, search boxes and forms in your browser, plus desktop apps like WhatsApp, Outlook, Notepad, Word and the Claude app on Windows.</p></div>
+      <div class="card"><h3>Instant checks, offline</h3><p>Spelling, grammar, repeated words, all-caps and style checks run on your computer as you type. No account and no setup.</p></div>
+      <div class="card"><h3>Free AI rewrites</h3><p>Optional Deep check and Rewrite (concise, formal, friendly, confident) using Chrome's built-in AI, Ollama, LM Studio, LanguageTool or free cloud tiers, or your own Claude API key.</p></div>
+      <div class="card"><h3>Private by default</h3><p>Your text only leaves your computer if you choose a cloud AI engine, and only when you ask for a deep check or rewrite.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Install the browser extension</h2>
+    <ol>
+      <li><a href="https://github.com/kalashswami/proofmark-writing-assistant/releases/latest/download/proofmark-extension.zip">Download proofmark-extension.zip</a> and unzip it. Keep the <code>proofmark-extension</code> folder somewhere permanent, like Documents.</li>
+      <li>Open <code>chrome://extensions</code> (or <code>edge://extensions</code> in Edge).</li>
+      <li>Turn on <strong>Developer mode</strong>.</li>
+      <li>Click <strong>Load unpacked</strong> and choose the <code>proofmark-extension</code> folder.</li>
+      <li>Pin Proofmark from the puzzle-piece menu, refresh your open tabs and start typing.</li>
+    </ol>
+
+    <h2 style="margin-top:32px">Install the Windows app</h2>
+    <ol>
+      <li><a href="https://github.com/kalashswami/proofmark-writing-assistant/releases/latest/download/Proofmark-Desktop-win-x64.zip">Download Proofmark-Desktop-win-x64.zip</a>, right-click it and choose <strong>Extract All…</strong>.</li>
+      <li>Open the <code>Proofmark-Desktop</code> folder and double-click <code>ProofmarkDesktop.exe</code>. No .NET install is needed.</li>
+      <li>If Windows shows “Windows protected your PC”, click <strong>More info</strong> → <strong>Run anyway</strong> (the app isn't code-signed).</li>
+      <li>Proofmark appears in the system tray. Click into any text box and start typing.</li>
+    </ol>
+    <p>Full instructions, free AI setup and troubleshooting are in the <a href="https://github.com/kalashswami/proofmark-writing-assistant#readme">README on GitHub</a>.</p>
+  </section>
+
+  <footer>
+    Proofmark Writing Assistant is made by Kalash Swami and released under the <a href="https://github.com/kalashswami/proofmark-writing-assistant/blob/main/LICENSE">GNU GPL v3.0</a>. It is an independent project and is not affiliated with Grammarly, Inc.
+  </footer>
+</div>
+</body>
+</html>

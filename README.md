@@ -11,6 +11,8 @@ A small floating button sits in the corner of the text box you're typing in. Und
 
 The instant checks run entirely on your computer and need no account or setup. Optional AI checks can use free engines (Chrome's built-in AI, Ollama, LM Studio, LanguageTool, free cloud tiers) or your own paid Claude API key.
 
+**Website:** https://kalashswami.github.io/proofmark-writing-assistant/
+
 > Proofmark is an independent project. It is not affiliated with, endorsed by, or built from the code of Grammarly, Inc.
 
 ---
