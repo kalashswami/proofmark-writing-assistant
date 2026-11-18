@@ -39,6 +39,13 @@ jobs:
           -p:IncludeNativeLibrariesForSelfExtract=true
           -o out/Proofmark-Desktop
 
+      - name: Put the engine and icon next to the exe (the app loads them from its folder)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out/Proofmark-Desktop/engine | Out-Null
+          Copy-Item desktop/engine/engine.js -Destination out/Proofmark-Desktop/engine/engine.js -Force
+          Copy-Item desktop/proofmark.ico -Destination out/Proofmark-Desktop/proofmark.ico -Force
+
       - name: Check the build output
         shell: pwsh
         run: |
