@@ -1,4 +1,6 @@
-* text=auto
+# Keep LF line endings on every platform (the extension's dictionary loader splits on "\n").
+* text=auto eol=lf
+# Windows batch files need CRLF.
 *.cmd text eol=crlf
 *.png binary
 *.ico binary
